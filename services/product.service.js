@@ -1,11 +1,15 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
+const pool = require('../bookstores/postgres.pool');
+
 class ProductsService {
 
-  constructor(){
+  constructor() {
     this.products = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -16,7 +20,7 @@ class ProductsService {
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
-        isBlock: faker.datatype.boolean(),
+        isBlock: faker.datatype.boolean()
       });
     }
   }
@@ -30,8 +34,10 @@ class ProductsService {
     return newProduct;
   }
 
-  find() {
-    return this.products;
+  async find() {
+    const query = 'SELECT * FROM tasks';
+    const answer = await this.pool.query(query);
+    return answer.rows;
   }
 
   async findOne(id) {
@@ -66,7 +72,6 @@ class ProductsService {
     this.products.splice(index, 1);
     return { id };
   }
-
 }
 
 module.exports = ProductsService;
