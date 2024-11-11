@@ -25,7 +25,7 @@ const CategorySchema = {
     defaultValue: true,
   },
   imageUrl: {
-    allowNull: true,
+    allowNull: false,
     field: 'image_url',
     type: DataTypes.STRING,
   },

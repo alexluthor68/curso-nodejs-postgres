@@ -1,17 +1,23 @@
 const Joi = require('joi');
 
 const id = Joi.number().integer();
-const name = Joi.string().min(3).max(15);
-const image = Joi.string().uri();
+const name = Joi.string().min(3).max(25);
+const description = Joi.string().min(3).max(30);
+const isActive = Joi.boolean().default(true);
+const imageUrl = Joi.string().uri();
 
 const createCategorySchema = Joi.object({
   name: name.required(),
-  image: image.required()
+  description: description.required(),
+  isActive: isActive.required(),
+  imageUrl: imageUrl.required()
 });
 
 const updateCategorySchema = Joi.object({
   name: name,
-  image: image
+  description: description,
+  isActive: isActive,
+  imageUrl: imageUrl
 });
 
 const getCategorySchema = Joi.object({
